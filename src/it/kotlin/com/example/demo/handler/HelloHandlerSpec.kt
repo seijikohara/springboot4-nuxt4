@@ -27,7 +27,7 @@ class HelloHandlerSpec(
             }
         }
 
-        test("getHello should set TEXT_HTML content type") {
+        test("getHello should return APPLICATION_JSON content type") {
             val mockRequest = mockk<ServerRequest>()
 
             runBlocking {
