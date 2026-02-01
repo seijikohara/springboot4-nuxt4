@@ -23,7 +23,7 @@ class HelloHandlerSpec(
                 val response = helloHandler.getHello(mockRequest)
 
                 response.statusCode().value() shouldBe 200
-                response.headers().contentType shouldBe MediaType.TEXT_HTML
+                response.headers().contentType shouldBe MediaType.APPLICATION_JSON
             }
         }
 
@@ -33,7 +33,7 @@ class HelloHandlerSpec(
             runBlocking {
                 val response = helloHandler.getHello(mockRequest)
 
-                response.headers().contentType shouldBe MediaType.TEXT_HTML
+                response.headers().contentType shouldBe MediaType.APPLICATION_JSON
             }
         }
 

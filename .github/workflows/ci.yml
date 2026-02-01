@@ -68,10 +68,10 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: frontend
       - name: Build
-        run: npm run build
+        run: npm run generate
         working-directory: frontend
 
   build-docker:
