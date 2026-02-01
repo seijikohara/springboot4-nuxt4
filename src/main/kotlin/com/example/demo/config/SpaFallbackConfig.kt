@@ -18,19 +18,21 @@ class SpaFallbackConfig(
     @Order(Ordered.LOWEST_PRECEDENCE)
     fun spaFallbackRouter() =
         coRouter {
-            val apiBasePath = applicationProperties.apiBasePath
-            val isSpaRequest =
-                RequestPredicate { request ->
-                    val path = request.path()
-                    val acceptsHtml =
-                        request.headers().accept().any {
-                            it.type == "text" && it.subtype == "html"
-                        }
-                    val isNotApi =
-                        !path.startsWith("$apiBasePath/") && path != apiBasePath
-                    val isNotFile = !path.substringAfterLast('/').contains('.')
-                    acceptsHtml && isNotApi && isNotFile
-                }
-            GET("/**", isSpaRequest, indexHandler::getIndex)
+            GET("/**", isSpaRequest(applicationProperties.apiBasePath), indexHandler::getIndex)
         }
+
+    companion object {
+        fun isSpaRequest(apiBasePath: String): RequestPredicate =
+            RequestPredicate { request ->
+                val path = request.path()
+                val acceptsHtml =
+                    request.headers().accept().any {
+                        it.type == "text" && it.subtype == "html"
+                    }
+                val isNotApi =
+                    !path.startsWith("$apiBasePath/") && path != apiBasePath
+                val isNotFile = !path.substringAfterLast('/').contains('.')
+                acceptsHtml && isNotApi && isNotFile
+            }
+    }
 }
