@@ -68,10 +68,10 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: frontend
       - name: Build
-        run: npm run build
+        run: npm run generate
         working-directory: frontend
 
   build-docker:
@@ -84,7 +84,7 @@ jobs:
       - name: Health Check
         uses: emilioschepis/wait-for-endpoint@v1.0.4
         with:
-          url: http://localhost:18080/health
+          url: http://localhost:18080/actuator/health
           method: GET
           expected-status: 200
           timeout: 60000

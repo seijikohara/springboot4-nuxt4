@@ -1,4 +1,5 @@
 import com.github.gradle.node.npm.task.NpmSetupTask
+import com.github.gradle.node.npm.task.NpmTask
 import com.github.gradle.node.task.NodeSetupTask
 import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.testing.Test
@@ -112,6 +113,35 @@ tasks {
 node {
     version = "24.13.0"
     download = true
+}
+
+val frontendDir = layout.projectDirectory.dir("frontend")
+
+val frontendInstall by tasks.registering(NpmTask::class) {
+    workingDir = frontendDir.asFile
+    args = listOf("ci")
+    inputs.file(frontendDir.file("package-lock.json"))
+    outputs.dir(frontendDir.dir("node_modules"))
+}
+
+val frontendGenerate by tasks.registering(NpmTask::class) {
+    workingDir = frontendDir.asFile
+    args = listOf("run", "generate")
+    dependsOn(frontendInstall)
+    inputs.dir(frontendDir.dir("app"))
+    inputs.file(frontendDir.file("nuxt.config.ts"))
+    inputs.file(frontendDir.file("package.json"))
+    outputs.dir(frontendDir.dir(".output/public"))
+}
+
+val copyFrontend by tasks.registering(Copy::class) {
+    from(frontendDir.dir(".output/public"))
+    into(layout.buildDirectory.dir("resources/main/static"))
+    dependsOn(frontendGenerate)
+}
+
+tasks.named("processResources") {
+    dependsOn(copyFrontend)
 }
 
 spotless {

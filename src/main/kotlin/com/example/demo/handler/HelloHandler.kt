@@ -13,7 +13,7 @@ class HelloHandler {
         logger.info("Called hello api")
         return ServerResponse
             .ok()
-            .contentType(MediaType.TEXT_HTML)
-            .bodyValueAndAwait("Hello")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValueAndAwait(mapOf("message" to "Hello"))
     }
 }
