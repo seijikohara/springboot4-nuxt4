@@ -84,7 +84,7 @@ jobs:
       - name: Health Check
         uses: emilioschepis/wait-for-endpoint@v1.0.4
         with:
-          url: http://localhost:18080/health
+          url: http://localhost:18080/actuator/health
           method: GET
           expected-status: 200
           timeout: 60000
