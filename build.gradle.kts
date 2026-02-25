@@ -2,8 +2,6 @@ import com.github.gradle.node.npm.task.NpmSetupTask
 import com.github.gradle.node.npm.task.NpmTask
 import com.github.gradle.node.task.NodeSetupTask
 import org.gradle.api.plugins.jvm.JvmTestSuite
-import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.named
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
@@ -101,17 +99,16 @@ testing {
     }
 }
 
-tasks {
-    withType<BootJar> {
-        archiveFileName.set("app.jar")
-    }
-    named("check") {
-        dependsOn(testing.suites.named("integrationTest"))
-    }
+tasks.withType<BootJar>().configureEach {
+    archiveFileName.set("app.jar")
+}
+
+tasks.named("check") {
+    dependsOn(testing.suites.named("integrationTest"))
 }
 
 node {
-    version = "24.13.0"
+    version = "24.14.0"
     download = true
 }
 
@@ -145,13 +142,10 @@ tasks.named("processResources") {
 }
 
 spotless {
-    val isWindows =
-        org.gradle.internal.os.OperatingSystem
-            .current()
-            .isWindows
-    val executable: (String) -> String = { if (isWindows) "$it.exe" else "bin/$it" }
-    val nodeExecutable by lazy { "${tasks.named<NodeSetupTask>("nodeSetup").get().nodeDir.get()}/${executable("node")}" }
-    val npmExecutable by lazy { "${tasks.named<NpmSetupTask>("npmSetup").get().npmDir.get()}/${executable("npm")}" }
+    val isWindows = System.getProperty("os.name").lowercase().contains("windows")
+    val executable: (String, String) -> String = { win, unix -> if (isWindows) win else "bin/$unix" }
+    val nodeExecutable by lazy { "${tasks.named<NodeSetupTask>("nodeSetup").get().nodeDir.get()}/${executable("node.exe", "node")}" }
+    val npmExecutable by lazy { "${tasks.named<NpmSetupTask>("npmSetup").get().npmDir.get()}/${executable("npm.cmd", "npm")}" }
     val prettier = "prettier" to "3.8.1"
     val prettierPluginSh = "prettier-plugin-sh" to "0.18.0"
     val defaultTargetExcludes =
@@ -159,6 +153,7 @@ spotless {
             ".git/**",
             ".gradle/**",
             ".idea/**",
+            ".claude/**",
             "bin/**",
             "build/**",
             "gradle/**",
@@ -202,6 +197,7 @@ spotless {
     listOf("spotlessPrettier", "spotlessSh").forEach { taskName ->
         tasks.named(taskName) {
             dependsOn(tasks.named("nodeSetup"))
+            mustRunAfter(frontendInstall)
         }
     }
 }

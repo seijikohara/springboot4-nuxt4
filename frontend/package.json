@@ -8,12 +8,12 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "deps:update": "npx npm-check-updates -u && npm install",
-    "deps:check": "npx npm-check-updates"
+    "deps:check": "npx taze major -l",
+    "deps:update": "npx taze major -wil"
   },
   "dependencies": {
-    "nuxt": "^4.3.0",
-    "vue": "^3.5.28",
+    "nuxt": "^4.3.1",
+    "vue": "^3.5.29",
     "vue-router": "^5.0.3"
   }
 }
