@@ -1,6 +1,6 @@
 [versions]
 gradle-node = "7.1.0"
-kotest = "6.1.10"
+kotest = "6.1.11"
 kotlin = "2.3.20"
 mockk = "1.14.9"
 spotless = "8.4.0"
