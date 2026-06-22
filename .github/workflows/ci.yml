@@ -18,7 +18,7 @@ jobs:
           private-key: ${{ secrets.DEV_AUTOMATION_PRIVATE_KEY }}
 
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # Ensure full history is available for commit
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Start application
         run: docker compose up -d app
       - name: Health Check
