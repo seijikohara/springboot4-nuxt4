@@ -5,7 +5,7 @@ kotlin = "2.4.10"
 mockk = "1.14.11"
 spotless = "8.9.0"
 spring-boot = "4.1.0"
-version-catalog-update = "1.1.0"
+version-catalog-update = "1.1.1"
 
 [libraries]
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
