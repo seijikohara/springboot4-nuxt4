@@ -3,7 +3,7 @@ gradle-node = "7.1.0"
 kotest = "6.2.5"
 kotlin = "2.4.21"
 mockk = "1.14.11"
-spotless = "8.10.3"
+spotless = "8.10.4"
 spring-boot = "4.1.1"
 version-catalog-update = "1.1.1"
 
